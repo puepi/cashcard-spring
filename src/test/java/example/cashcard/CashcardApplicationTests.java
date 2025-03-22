@@ -41,6 +41,13 @@ class CashcardApplicationTests {
 	}
 
 	@Test
+	void shouldCreateANewCashCard(){
+		CashCard cashCard=new CashCard(null,250.00);
+		ResponseEntity<Void> createResponse=restTemplate.postForEntity("/cashcards",cashCard,Void.class);
+		assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+	}
+
+	@Test
 	void contextLoads() {
 	}
 
