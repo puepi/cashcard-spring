@@ -2,7 +2,10 @@ package example.cashcard;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Optional;
 
 @RestController
@@ -26,7 +29,10 @@ public class CashCardController {
     }
 
     @PostMapping
-    private ResponseEntity<Void> createCashCard(){
-        return null;
+    private ResponseEntity<Void> createCashCard(@RequestBody CashCard cashCard, UriComponentsBuilder ucb){
+        CashCard savedCashCard=cashCardRepository.save(cashCard);
+        URI locationOfCashCard=ucb.path("/cashcards/{id}")
+                .buildAndExpand(savedCashCard.id()).toUri();
+        return ResponseEntity.created(locationOfCashCard).build();
     }
 }
