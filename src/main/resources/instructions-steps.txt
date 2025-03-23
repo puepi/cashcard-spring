@@ -4,3 +4,6 @@
 4: Implement the POST Endpoint
 5: Understand CrudRepository.save
 7: Final Testing and Learning Moment
+
+Lab: Returning a list with GET
+1: Changes from the Previous Lab
