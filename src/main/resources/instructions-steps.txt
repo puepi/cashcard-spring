@@ -14,3 +14,5 @@ Lab: Simple Spring Security
 1: Understand our Security Requirements
 2: Review update from Previous Lab
 3: Add the Spring Security Dependency
+4: Satisfy Spring Security's Dependencies
+5: Configure Basic Authentication
