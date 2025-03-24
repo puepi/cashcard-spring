@@ -80,6 +80,17 @@ class CashcardApplicationTests {
 	}
 
 	@Test
+	void shouldReturnAPageOfCashCards(){
+		ResponseEntity<String> response=restTemplate.getForEntity("/cashcards?page=0&size=1", String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext documentContext=JsonPath.parse(response.getBody());
+		JSONArray page=documentContext.read("$[*]");
+		assertThat(page.size()).isEqualTo(1);
+
+	}
+
+	@Test
 	void contextLoads() {
 	}
 
