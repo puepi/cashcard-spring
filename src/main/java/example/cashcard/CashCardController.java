@@ -6,6 +6,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -34,5 +35,10 @@ public class CashCardController {
         URI locationOfCashCard=ucb.path("/cashcards/{id}")
                 .buildAndExpand(savedCashCard.id()).toUri();
         return ResponseEntity.created(locationOfCashCard).build();
+    }
+
+    @GetMapping
+    ResponseEntity<Iterable<CashCard>> findAll(){
+        return ResponseEntity.ok(cashCardRepository.findAll());
     }
 }

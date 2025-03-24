@@ -32,7 +32,7 @@ public class CashCardJsonTest {
 
     @Test
     void cashCardSerializationTest() throws IOException {
-        CashCard cashcard=new CashCard(99L,123.45);
+        CashCard cashcard=cashCards[0];
         assertThat(json.write(cashcard))
                 .isStrictlyEqualToJson("expected.json");
         assertThat(json.write(cashcard))

@@ -8,3 +8,4 @@
 Lab: Returning a list with GET
 1: Changes from the Previous Lab
 2: Testing the New Data Contract
+3: Test for an Additional GET Endpoint
