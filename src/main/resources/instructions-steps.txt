@@ -9,3 +9,8 @@ Lab: Returning a list with GET
 1: Changes from the Previous Lab
 2: Testing the New Data Contract
 3: Test for an Additional GET Endpoint
+
+Lab: Simple Spring Security
+1: Understand our Security Requirements
+2: Review update from Previous Lab
+3: Add the Spring Security Dependency
