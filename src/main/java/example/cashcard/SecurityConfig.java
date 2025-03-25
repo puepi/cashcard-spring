@@ -17,6 +17,13 @@ class SecurityConfig {
 //
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(request->
+                        request.requestMatchers("/cashcards/**")
+                                .authenticated())
+                .httpBasic(Customizer.withDefaults())
+                .csrf(csrf->csrf.disable());
+
         return http.build();
     }
 //

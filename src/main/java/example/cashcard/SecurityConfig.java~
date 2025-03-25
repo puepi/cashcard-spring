@@ -15,7 +15,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 class SecurityConfig {
 //
+    @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(request->
+                        request.requestMatchers("/cashcards/**")
+                                .authenticated())
+                .httpBasic(Customizer.withDefaults())
+                .csrf(csrf)
+
         return http.build();
     }
 //
