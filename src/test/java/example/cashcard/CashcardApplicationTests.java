@@ -48,7 +48,7 @@ class CashcardApplicationTests {
 	@Test
 	@DirtiesContext
 	void shouldCreateANewCashCard(){
-		CashCard cashCard=new CashCard(null,250.00);
+		CashCard cashCard=new CashCard(null,250.00,"sarah1");
 		ResponseEntity<Void> createResponse=restTemplate.postForEntity("/cashcards",cashCard,Void.class);
 		assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
@@ -80,8 +80,18 @@ class CashcardApplicationTests {
 	}
 
 	@Test
-	void shouldReturnAPageOfCashCards(){
-		ResponseEntity<String> response=restTemplate.getForEntity("/cashcards?page=0&size=1&sort=amount,asc", String.class);
+	void shouldReturnAPageOfCashCards() {
+		ResponseEntity<String> response = restTemplate.getForEntity("/cashcards?page=0&size=1", String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext documentContext = JsonPath.parse(response.getBody());
+		JSONArray page = documentContext.read("$[*]");
+		assertThat(page.size()).isEqualTo(1);
+	}
+
+	@Test
+	void shouldReturnASortedPageOfCashCards() {
+		ResponseEntity<String> response = restTemplate.getForEntity("/cashcards?page=0&size=1&sort=amount,desc", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 		DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -89,11 +99,11 @@ class CashcardApplicationTests {
 		assertThat(read.size()).isEqualTo(1);
 
 		double amount = documentContext.read("$[0].amount");
-		assertThat(amount).isEqualTo(1.00);
+		assertThat(amount).isEqualTo(150.00);
 	}
 
 	@Test
-	void shouldReturnASortedPageOfCashCardsWithNoParametersAndUseDefaultValues(){
+	void shouldReturnASortedPageOfCashCardsWithNoParametersAndUseDefaultValues() {
 		ResponseEntity<String> response = restTemplate.getForEntity("/cashcards", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
