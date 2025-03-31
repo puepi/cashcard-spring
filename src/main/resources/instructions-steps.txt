@@ -18,3 +18,4 @@ Lab: Simple Spring Security
 5: Configure Basic Authentication
 6: Testing Basic Authentication
 7: Support Authorization
+8: Cash Card ownership: Repository Updates

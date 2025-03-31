@@ -10,6 +10,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +25,8 @@ public class CashCardController {
     }
 
     @GetMapping("/{requestedId}")
-    private ResponseEntity<CashCard> findById(@PathVariable Long requestedId){
-        Optional<CashCard> cashCardOptional=cashCardRepository.findById(requestedId);
+    private ResponseEntity<CashCard> findById(@PathVariable Long requestedId, Principal principal){
+        Optional<CashCard> cashCardOptional=Optional.ofNullable(cashCardRepository.findByIdAndOwner(requestedId,principal.getName()));
         if(cashCardOptional.isPresent()){
             return ResponseEntity.ok(cashCardOptional.get());
         }else{
@@ -34,8 +35,9 @@ public class CashCardController {
     }
 
     @PostMapping
-    private ResponseEntity<Void> createCashCard(@RequestBody CashCard cashCard, UriComponentsBuilder ucb){
-        CashCard savedCashCard=cashCardRepository.save(cashCard);
+    private ResponseEntity<Void> createCashCard(@RequestBody CashCard cashCard, UriComponentsBuilder ucb, Principal principal){
+        CashCard cashCardWithOwner=new CashCard(null,cashCard.amount(),principal.getName());
+        CashCard savedCashCard=cashCardRepository.save(cashCardWithOwner);
         URI locationOfCashCard=ucb.path("/cashcards/{id}")
                 .buildAndExpand(savedCashCard.id()).toUri();
         return ResponseEntity.created(locationOfCashCard).build();
@@ -47,14 +49,12 @@ public class CashCardController {
 //    }
 
     @GetMapping
-    ResponseEntity<List<CashCard>> findAll(Pageable pageable) {
-        Page<CashCard> page= cashCardRepository.findAll(PageRequest.of(
+    ResponseEntity<List<CashCard>> findAll(Pageable pageable, Principal principal){
+        Page<CashCard> page= cashCardRepository.findByOwner(principal.getName(),PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
                 pageable.getSortOr(Sort.by(Sort.Direction.ASC, "amount"))
-                )
-        );
-
+                ));
         return ResponseEntity.ok(page.getContent());
 
     } // <1>
