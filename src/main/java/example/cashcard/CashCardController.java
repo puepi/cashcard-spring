@@ -1,5 +1,6 @@
 package example.cashcard;
 
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -58,4 +59,12 @@ public class CashCardController {
         return ResponseEntity.ok(page.getContent());
 
     } // <1>
+
+    @PutMapping("/{requestedId}")
+    private ResponseEntity<Void> putCashCard(@PathVariable Long requestedId,@RequestBody CashCard cashCardUpdate, Principal principal){
+        CashCard cashCard=cashCardRepository.findByIdAndOwner(requestedId,principal.getName());
+        CashCard updatedCashCard=new CashCard(cashCard.id(),cashCardUpdate.amount(),principal.getName());
+        cashCardRepository.save(updatedCashCard);
+        return ResponseEntity.noContent().build();
+    }
 }

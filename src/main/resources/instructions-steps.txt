@@ -19,3 +19,8 @@ Lab: Simple Spring Security
 6: Testing Basic Authentication
 7: Support Authorization
 8: Cash Card ownership: Repository Updates
+
+
+Lab: Implementing PUT
+2: Write the Test First
+3: Implement @PutMapping in the Controller
